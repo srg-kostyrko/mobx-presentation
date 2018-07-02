@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Going big with MobX</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <!-- <link rel="stylesheet" href="css/theme/black.css"> -->
+    <link rel="stylesheet" href="css/theme/solarized.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+        .reveal pre {
+            box-shadow: none;
+        }
+
+        .reveal section img {
+            border: none;
+            box-shadow: none;
+            padding: 5px;
+            background: white;
+        }
+
+        img.nobg {
+            background: transparent !important;
+        }
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Going big with MobX</h1>
+                <img style="width:200px;border: none;box-shadow: none;" src='assets/mobx.png' />
+            </section>
+            <section>About me</section>
+            <section>
+                <img src="assets/no-redux.png" />
+            </section>
+            <section>
+                <section>
+                    <h1>MobX quick tour</h1>
+                </section>
+                <section>
+                    <img src='assets/mw.png' />
+                </section>
+                <section>
+                    <h3>Mutable</h3>
+                    <h3 class="fragment highlight-blue">observable</h3>
+                    <h3>state</h3>
+                </section>
+                <section>
+                    Observable (with decorators)
+                    <pre>
+                        <code class='js' data-trim>
+class User {
+    @observable firstName = 'Michel'
+    @observable lastName = 'Weststrate'
+}
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    Observable (ES5)
+                    <pre>
+                        <code class='js' data-trim>
+class User {
+    constructor () {
+        extendObservable(this, {
+            firstName: 'Michel',
+            lastName: 'Weststrate'
+        })
+    }
+}
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    Observable (MobX v4+)
+                    <pre>
+                        <code class='js' data-trim>
+class User {
+    firstName = 'Michel'
+    lastName = 'Weststrate'
+}
+decorate(User, {
+    firstName: observable,
+    lastName: observable
+})
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h1>Derivations</h1>
+                    <ul>
+                        <li class="fragment fade-in">User interace</li>
+                        <li class="fragment fade-in">Derived data (e.g. number of todos left)</li>
+                        <li class="fragment fade-in">Backend integrations (like sending changes to the server)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>MobX philosophy</h3>
+                    <strong>Anything that can be derived from the application state, should be derived. Automatically.</strong>
+                </section>
+                <section>
+                    <h2>Computed values</h2>
+                    <pre>
+                        <code class='js' data-trim>
+class User {
+    ...
+    @computed get fullName () {
+        return this.firstName + ' ' + this.lastName
+    }
+}
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h2>Reactions</h2>
+                    <pre>
+                        <code class='js' data-trim>
+autorun(() => console.log(user.fullName))
+
+reaction(() => user.token, () => user.getDataFromServer())
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <pre>
+                        <code class='jsx' data-trim>
+@observer
+class UserInfo extends React.Component {
+    render () {
+        return <div>{this.props.user.fullName}</div>
+    }
+}
+                        </code>
+                        </pre>
+                </section>
+                <section>
+                    <h1>Derivations</h1>
+                    <ul>
+                        <li class="fragment fade-in">
+                            <b>Automatically</b> and
+                            <b>atomically</b> updated on state change
+                        </li>
+                        <li class="fragment fade-in">
+                            Updated
+                            <b>synchronously</b>
+                        </li>
+                        <li class="fragment fade-in">
+                            Computed are
+                            <b>lazy</b>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Actions</h1>
+                    <pre>
+                        <code class='js' data-trim>
+class User {
+    ...
+    @action setFirstName (firstName) {
+        this.firstName = firstName
+    }
+}
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Unidirectional data flow</h3>
+                    <img src="assets/flow.png" />
+                </section>
+                <section>
+                    <h1>Derivations graph</h1>
+                </section>
+                <section>
+                    <pre>
+                        <code class='js' data-trim>
+class User {
+    ...
+    @observable nickName = null
+}
+                        </code>
+                    </pre>
+                    <pre>
+                        <code class='js' data-trim>
+@observer
+class UserInfo extends React.Component {
+    render () {
+        const { user } = this.props
+        return <div>{user.nickName || user.fullName}</div>
+    }
+}
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <img src="assets/graph1.png" />
+                </section>
+                <section>
+                    <pre>
+                        <code class='js' data-trim>
+user.nickName = 'happy-coder'
+                        </code>
+                    </pre>
+                    <pre>
+                        <code class='html' data-trim>
+...
+<div>{user.nickName || user.fullName}</div>
+...
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <img src="assets/graph2.png" />
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    Why MobX?
+                </section>
+                <section>
+                    <h4>Project</h4>
+                    <ul>
+                        <li>Startup lanched in 2009</li>
+                        <li>Web app in 2012</li>
+                        <li>Flash</li>
+                        <li>Own binary protocol for data transfer</li>
+                    </ul>
+                </section>
+                <section>
+                    <ul>
+                        <ul>
+                            <li>Huge amount of data</li>
+                            <li>Real-time updates (4 times/sec)</li>
+                            <li>Intended to run whole working day</li>
+                            <li>Low memory and CPU consumption</li>
+                        </ul>
+                    </ul>
+                </section>
+                <section data-background-image="assets/app.png" data-background-size="contain"></section>
+            </section>
+            <section>
+                <section data-background-image='assets/magic-trick.jpg'></section>
+                <section>
+                    <a href="https://mobx.js.org/best/react.html">
+                        What does MobX react to?
+                    </a>
+                    <br/>
+                    <a href="https://mobx.js.org/best/pitfalls.html">
+                        Common pitfalls &amp; best practices
+                    </a>
+                </section>
+                <section data-background-image="assets/strict.jpg">
+                    <h3>Be Strict</h3>
+                    <pre>
+                        <code class='js' data-trim>
+// v3
+useStrict()
+
+// v4
+configure({ enforceActions: "strict" });
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <img class='nobg' src='assets/structure.png' />
+                </section>
+                <section>
+                    Managing local component state with MobX
+                    <ol>
+                        <li>setState is asynchronous</li>
+                        <li>setState can cause unnecessary renders</li>
+                        <li>setState is not sufficient to capture all component state</li>
+                    </ol>
+                </section>
+            </section>
+            <section>
+                mobx-state-tree
+                <section>
+                    <img src="assets/performance.png" />
+                </section>
+            </section>
+            <section>
+                <h1>Links</h1>
+                <ul>
+                    <li>
+                        <a href="https://hackernoon.com/the-fundamental-principles-behind-mobx-7a725f71f3e8">
+                            Fundamental principles behind MobX
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367">
+                            You Might Not Need Redux
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/watch?v=76FRrbY18Bs">
+                            Preethi Kasireddy - MobX vs Redux: Comparing the Opposing Paradigms
+                        </a>
+                    </li>
+                    <li>
+                        <a href='https://blog.cloudboost.io/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e'>
+                            3 Reasons why I stopped using React.setState
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section data-background-image="assets/questions.jpg">
+            </section>
+        </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // More info about config & dependencies:
+        // - https://github.com/hakimel/reveal.js#configuration
+        // - https://github.com/hakimel/reveal.js#dependencies
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: 'plugin/markdown/marked.js' },
+                { src: 'plugin/markdown/markdown.js' },
+                { src: 'plugin/notes/notes.js', async: true },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+            ]
+        });
+    </script>
+</body>
+
+</html>
