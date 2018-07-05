@@ -143,6 +143,7 @@ reaction(() => user.token, () => user.getDataFromServer())
                 <section>
                     <pre>
                         <code class='jsx' data-trim>
+@inject('user')
 @observer
 class UserInfo extends React.Component {
     render () {
@@ -268,14 +269,28 @@ user.nickName = 'happy-coder'
                         Common pitfalls &amp; best practices
                     </a>
                 </section>
+                <section>
+                    <pre><code class='js' data-trim>
+Array.isArray(observable([1,2,3])) === false
+                    </code></pre>
+                    <pre><code class='js' data-trim>
+const observableObject = observable({
+    test: 1
+})
+observableObject.test = 2
+observableObject.someNewProp = value
+                    </code></pre>
+                </section>
+                <section>
+                    state lib not state container
+                </section>
+                <section>
+                    serialization https://github.com/mobxjs/serializr
+                </section>
                 <section data-background-image="assets/strict.jpg">
                     <h3>Be Strict</h3>
                     <pre>
                         <code class='js' data-trim>
-// v3
-useStrict()
-
-// v4
 configure({ enforceActions: "strict" });
                         </code>
                     </pre>
@@ -293,7 +308,27 @@ configure({ enforceActions: "strict" });
                 </section>
             </section>
             <section>
-                mobx-state-tree
+                <section>
+                    inject('store') inject(({ store }) => { return { user: store.user } })
+                </section>
+            </section>
+            <section>
+                <section>
+                    What if we would like to have:
+                    <ul>
+                        <li>State container</li>
+                        <li>Immutability</li>
+                        <li>Easy serialization/desirialization</li>
+                        <li>Time traveling</li>
+                        <li>Undo/redo</li>
+                        <li>Easy updates sharing</li>
+                        <li>Middlewares</li>
+                        <li>... and without redux boilerplate</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>mobx-state-tree</h1>
+                </section>
                 <section>
                     <img src="assets/performance.png" />
                 </section>
@@ -337,6 +372,7 @@ configure({ enforceActions: "strict" });
         // - https://github.com/hakimel/reveal.js#dependencies
         Reveal.initialize({
             history: true,
+            defaultTiming: 60,
             dependencies: [
                 { src: 'plugin/markdown/marked.js' },
                 { src: 'plugin/markdown/markdown.js' },
