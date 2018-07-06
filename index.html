@@ -26,8 +26,64 @@
             background: white;
         }
 
+        .reveal .text-on-bg {
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
         img.nobg {
             background: transparent !important;
+        }
+
+        section .folder-container {
+            margin: 10px;
+            padding: 0 20px;
+            margin: 0;
+        }
+
+        section .folder-wrapper {
+            margin: 0;
+            padding: 0;
+
+            list-style-type: none;
+        }
+
+        section .file-item,
+        section .folder-item {
+            margin-left: -16px;
+            padding-left: 20px;
+
+            list-style-type: none;
+        }
+
+        .about {
+            position: relative;
+            bottom: -40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .about .photo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .about .info {
+            margin-left: 15px;
+            font-size: 50%;
+            text-align: left;
+        }
+
+        .about .logo {
+            display: inline-block;
+            width: 238px;
+            height: 28px;
+            background: transparent;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            top: 9px;
         }
     </style>
 
@@ -47,17 +103,36 @@
             <section>
                 <h1>Going big with MobX</h1>
                 <img style="width:200px;border: none;box-shadow: none;" src='assets/mobx.png' />
+                <div class="about">
+                    <img class="photo" src="assets/Sergey_Kostyrko.jpg" />
+                    <div class="info">
+                        Sergey Kostyrko,
+                        <br /> Software Engineer @
+                        <img class="logo" src="assets/logo.png" />
+                    </div>
+                </div>
             </section>
-            <section>About me</section>
             <section>
-                <img src="assets/no-redux.png" />
+                <section>
+                    <h2>State management</h2>
+                </section>
+                <section>
+                    Redux - standard de facto
+                </section>
+                <section>
+                    <img src="assets/no-redux.png" />
+                </section>
+                <section>
+                    <img src="assets/mobx-vs-redux.png" />
+                    <br/>
+                    <a href="https://www.youtube.com/watch?v=76FRrbY18Bs">
+                        Preethi Kasireddy - MobX vs Redux: Comparing the Opposing Paradigms
+                    </a>
+                </section>
             </section>
             <section>
                 <section>
                     <h1>MobX quick tour</h1>
-                </section>
-                <section>
-                    <img src='assets/mw.png' />
                 </section>
                 <section>
                     <h3>Mutable</h3>
@@ -67,7 +142,7 @@
                 <section>
                     Observable (with decorators)
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 class User {
     @observable firstName = 'Michel'
     @observable lastName = 'Weststrate'
@@ -78,7 +153,7 @@ class User {
                 <section>
                     Observable (ES5)
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 class User {
     constructor () {
         extendObservable(this, {
@@ -93,7 +168,7 @@ class User {
                 <section>
                     Observable (MobX v4+)
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 class User {
     firstName = 'Michel'
     lastName = 'Weststrate'
@@ -115,12 +190,16 @@ decorate(User, {
                 </section>
                 <section>
                     <h3>MobX philosophy</h3>
-                    <strong>Anything that can be derived from the application state, should be derived. Automatically.</strong>
+                    <p>
+                        Anything that can be derived from the application state, should be derived.
+                    </p>
+                    <br/>
+                    <strong class="fragment fade-in">Automatically.</strong>
                 </section>
                 <section>
                     <h2>Computed values</h2>
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 class User {
     ...
     @computed get fullName () {
@@ -133,11 +212,16 @@ class User {
                 <section>
                     <h2>Reactions</h2>
                     <pre>
-                        <code class='js' data-trim>
-autorun(() => console.log(user.fullName))
+                        <code class='ts'>
+    autorun(() => console.log(user.fullName))
 
-reaction(() => user.token, () => user.getDataFromServer())
-                        </code>
+</code>
+                    </pre>
+                    <pre>
+                        <code class='ts fragment fade-in'>
+    reaction(() => user.token, () => user.getDataFromServer())
+
+</code>
                     </pre>
                 </section>
                 <section>
@@ -173,7 +257,7 @@ class UserInfo extends React.Component {
                 <section>
                     <h1>Actions</h1>
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 class User {
     ...
     @action setFirstName (firstName) {
@@ -192,7 +276,7 @@ class User {
                 </section>
                 <section>
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 class User {
     ...
     @observable nickName = null
@@ -200,7 +284,7 @@ class User {
                         </code>
                     </pre>
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts' data-trim>
 @observer
 class UserInfo extends React.Component {
     render () {
@@ -216,12 +300,12 @@ class UserInfo extends React.Component {
                 </section>
                 <section>
                     <pre>
-                        <code class='js' data-trim>
+                        <code class='ts'>
 user.nickName = 'happy-coder'
                         </code>
                     </pre>
                     <pre>
-                        <code class='html' data-trim>
+                        <code class='html'>
 ...
 <div>{user.nickName || user.fullName}</div>
 ...
@@ -235,31 +319,128 @@ user.nickName = 'happy-coder'
 
             <section>
                 <section>
-                    Why MobX?
+                    <h1>Why MobX?</h1>
                 </section>
                 <section>
-                    <h4>Project</h4>
+                    <h2>Project</h2>
                     <ul>
-                        <li>Startup lanched in 2009</li>
-                        <li>Web app in 2012</li>
-                        <li>Flash</li>
-                        <li>Own binary protocol for data transfer</li>
-                    </ul>
-                </section>
-                <section>
-                    <ul>
-                        <ul>
-                            <li>Huge amount of data</li>
-                            <li>Real-time updates (4 times/sec)</li>
-                            <li>Intended to run whole working day</li>
-                            <li>Low memory and CPU consumption</li>
-                        </ul>
+                        <li class="fragment fade-in">App for financial analytics</li>
+                        <li class="fragment fade-in">Huge amount of data</li>
+                        <li class="fragment fade-in">Real-time updates (4 times/sec)</li>
+                        <li class="fragment fade-in">Intended to run whole working day</li>
+                        <li class="fragment fade-in">Low memory and CPU consumption</li>
                     </ul>
                 </section>
                 <section data-background-image="assets/app.png" data-background-size="contain"></section>
             </section>
             <section>
-                <section data-background-image='assets/magic-trick.jpg'></section>
+                <section>
+                    <h2>To much freedom</h2>
+                </section>
+                <section>
+                    <pre>
+                        <code class='ts'>
+
+  user.firstName = 'Tom'
+
+  user.setFirstName('Tom')
+
+                        </code>
+                    </pre>
+                </section>
+                <section data-background-image="assets/strict.jpg">
+                    <h3 class="text-on-bg">Be Strict</h3>
+                    <pre>
+                        <code class='ts'>
+
+  configure({ enforceActions: "strict" });
+
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h2>State
+                        <span class="fragment strike">container</span>
+                        <span class="fragment fade-in">library</span>
+                    </h2>
+                </section>
+                <section>
+                    <img class='nobg' src='assets/structure.png' />
+                </section>
+                <section>
+                    <img class='nobg' src='assets/structure-spa.png' />
+                </section>
+                <section>
+                    <ul class="folder-container">
+                        <li class="folder-item">
+                            <i data-feather="folder"></i> app
+                        </li>
+                        <li class="folder-wrapper">
+                            <ul class="folder-container">
+                                <li class="folder-item">
+                                    <i data-feather="folder"></i> components
+                                </li>
+                                <li class="folder-item">
+                                    <i data-feather="folder"></i> modules
+                                </li>
+                                <li class="folder-item">
+                                    <i data-feather="folder"></i> stores
+                                </li>
+                                <li class="folder-item">
+                                    <i data-feather="folder"></i> utils
+                                </li>
+                                <li class="file-item">
+                                    <i data-feather="file"></i> App.js
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <ul class="folder-container">
+                        <li class="folder-item">
+                            <i data-feather="folder"></i> modules
+                        </li>
+                        <li class="folder-wrapper">
+                            <ul class="folder-container">
+                                <li class="folder-item">
+                                    <i data-feather="folder"></i> Chart
+                                </li>
+                                <li class="folder-wrapper">
+                                    <ul class="folder-container">
+                                        <li class="folder-item">
+                                            <i data-feather="folder"></i> components
+                                        </li>
+                                        <li class="folder-item">
+                                            <i data-feather="folder"></i> stores
+                                        </li>
+                                        <li class="folder-item">
+                                            <i data-feather="folder"></i> utils
+                                        </li>
+                                        <li class="file-item">
+                                            <i data-feather="file"></i> Chart.js
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section data-background-image='assets/magic-trick.jpg'>
+                    <h1 class="text-on-bg">
+                        It
+                        <p style="position: relative;">
+                            <p class="fragment fade-in" style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+                                LOOKS LIKE
+                            </p>
+                            <p class="fragment fade-out" style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+                                IS
+                            </p>
+                            <p>&nbsp;</p>
+                        </p>
+                        magic!
+                    </h1>
+                </section>
                 <section>
                     <a href="https://mobx.js.org/best/react.html">
                         What does MobX react to?
@@ -270,71 +451,257 @@ user.nickName = 'happy-coder'
                     </a>
                 </section>
                 <section>
-                    <pre><code class='js' data-trim>
-Array.isArray(observable([1,2,3])) === false
-                    </code></pre>
-                    <pre><code class='js' data-trim>
-const observableObject = observable({
-    test: 1
-})
-observableObject.test = 2
-observableObject.someNewProp = value
-                    </code></pre>
+                    <h2>
+                        Design your data flow
+                    </h2>
                 </section>
+                <section data-background-image="assets/chart.png" data-background-size="contain"></section>
                 <section>
-                    state lib not state container
-                </section>
-                <section>
-                    serialization https://github.com/mobxjs/serializr
-                </section>
-                <section data-background-image="assets/strict.jpg">
-                    <h3>Be Strict</h3>
                     <pre>
-                        <code class='js' data-trim>
-configure({ enforceActions: "strict" });
+                        <code class='ts' data-trim>
+class DataStore {
+    @observable trades = []
+}
+                        </code>
+                    </pre>
+                    <pre class="fragment fade-in">
+                        <code class='ts' data-trim>
+class TradesModuleStore {
+    @observable filters = [['qty', '>', 5]]
+    @computed get filteredTrades () {
+        return this.dataStore.trades.filter(...)
+    }
+}
+                        </code>
+                    </pre>
+                    <pre class="fragment fade-in">
+                        <code class='ts' data-trim>
+class TradesToolbarComponent extends React.Component {
+    @computed get isExportEnabled () {
+        return this.props.store.filteredTrades.length > 0
+    }
+}
                         </code>
                     </pre>
                 </section>
                 <section>
-                    <img class='nobg' src='assets/structure.png' />
+                    <p>
+                        @computed
+                    </p>
+                    <p>
+                        vs
+                    </p>
+                    <p>
+                        @observable + reaction
+                    </p>
                 </section>
                 <section>
-                    Managing local component state with MobX
-                    <ol>
-                        <li>setState is asynchronous</li>
-                        <li>setState can cause unnecessary renders</li>
-                        <li>setState is not sufficient to capture all component state</li>
-                    </ol>
+                    <p>
+                        Consider using MobX as local component state
+                    </p>
+                    <ul>
+                        <li class="fragment fade-in">setState is asynchronous</li>
+                        <li class="fragment fade-in">setState can cause unnecessary renders</li>
+                        <li class="fragment fade-in">setState is not sufficient to capture all component state</li>
+                    </ul>
+                </section>
+                <section>
+                    Don't forget to dispose your reactions!
                 </section>
             </section>
             <section>
                 <section>
-                    inject('store') inject(({ store }) => { return { user: store.user } })
+                    <h1>Problems</h1>
+                </section>
+                <section>
+                    Prior to v5
+                    <pre><code class='ts'>
+class DataStore {
+    @observable trades = []
+}
+                    </code></pre>
+                    <pre class="fragment fade-in"><code class='ts'>
+Array.isArray(dataStore.trades) === false
+                    </code></pre>
+                    <pre class="fragment fade-in"><code class='ts'>
+Array.isArray(toJS(dataStore.trades)) === true
+                    </code></pre>
+                </section>
+                <section>
+                    Prior to v5
+                    <pre><code class='ts'>
+class DataStore {
+    @observable tradesByCompany = {
+        Apple: 1000
+    }
+}
+                    </code></pre>
+                    <pre class="fragment fade-in"><code class='ts'>
+dataStore.tradesByCompany.Apple // changes observed
+
+dataStore.tradesByCompany.Microsoft // changes not observed
+                    </code></pre>
+                    <pre class="fragment fade-in"><code class='ts'>
+class DataStore {
+    @observable tradesByCompany = new Map()
+}
+                    </code></pre>
+                </section>
+                <section>
+                    Most third-party libraries expect immutability
+                </section>
+                <section>
+                    Wasted renderings
+                </section>
+                <section>
+                    Not rerended when needed
+                </section>
+                <section>
+                    No time travel debugging
+                </section>
+                <section>
+                    Undo/redo or changes sharing would require additional coding
+                </section>
+                <section>
+                    Serialization/deserializaion
+                    <p class="fragment fade-in">
+                        <a href="https://github.com/mobxjs/serializr">https://github.com/mobxjs/serializr</a>
+                    </p>
+                </section>
+                <section>
+                    Decorators
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Benefits</h1>
+                </section>
+                <section>
+                    Steady learning curve
+                    <p class="fragment fade-in">
+                        <strong>Easy to learn, hard to master</strong>
+                    </p>
+                </section>
+                <section>
+                    Less boilerplate
+                    <br/> (compared to redux)
+                </section>
+                <section>
+                    Easy to integrate async data fetching
+                    <pre><code class='ts'>
+class DataStore {
+    async loadTrades () {
+        this.setLoadingTrades(true)
+        try {
+            const trades = await fetchTrades()
+            this.setTrades(trades)
+        } catch (err) {
+            this.setError(err.message)
+        }
+        this.setLoadingTrades(false)
+    }
+}
+                    </code></pre>
+                </section>
+                <section>
+                    No need to normalize state
+                </section>
+                <section>
+                    Performance out of box
+                </section>
+                <section>
+                    <img src="assets/performance.png" />
+                </section>
+                <section>
+                    An artificial example where MobX really shines and Redux is not really suited for it
+                    <img src="assets/paint.gif" />
+                </section>
+                <section>
+                    <h3>Controlled observability</h3>
+                    <h2 class="fragment fade-in">MobX Atoms</h2>
+                </section>
+                <section>
+                    <img class="nobg" src="assets/subscription.png" />
+                </section>
+                <section>
+                    <img class="nobg" src="assets/complex-subscription.png" />
+                </section>
+                <section>
+                    <pre><code class="ts">
+class PriceFieldAtom {
+    atom = createAtom(
+        "PriceField",
+        () => this.subscribe(this.onUpdate), // onObserved
+        () => this.unsubscribe() // onUnObserved
+    );
+}
+                    </code></pre>
+                </section>
+                <section>
+                    <pre><code class='ts'>
+class PriceFieldAtom {
+    ...
+    get price () {
+        this.atom.reportObserved()
+        return this.dataSource.price
+    }
+    onUpdate = () => {
+        this.atom.reportChanged()
+    }
+}
+                    </code></pre>
                 </section>
             </section>
             <section>
                 <section>
                     What if we would like to have:
                     <ul>
-                        <li>State container</li>
-                        <li>Immutability</li>
-                        <li>Easy serialization/desirialization</li>
-                        <li>Time traveling</li>
-                        <li>Undo/redo</li>
-                        <li>Easy updates sharing</li>
-                        <li>Middlewares</li>
-                        <li>... and without redux boilerplate</li>
+                        <li class="fragment fade-in">State container</li>
+                        <li class="fragment fade-in">Immutability</li>
+                        <li class="fragment fade-in">Easy serialization/desirialization</li>
+                        <li class="fragment fade-in">Time traveling</li>
+                        <li class="fragment fade-in">Undo/redo</li>
+                        <li class="fragment fade-in">Easy updates sharing</li>
+                        <li class="fragment fade-in">Middlewares</li>
+                        <li class="fragment fade-in">... and without redux boilerplate</li>
                     </ul>
                 </section>
                 <section>
                     <h1>mobx-state-tree</h1>
                 </section>
                 <section>
-                    <img src="assets/performance.png" />
+                    <img src="assets/performance-mst.png" />
                 </section>
             </section>
             <section>
-                <h1>Links</h1>
+                Summary
+                <section>
+                    <p>
+                        Was MobX a good choice for project?
+                    </p>
+                    <p class="fragment fade-in">
+                        <strong>Definitelly!</strong>
+                    </p>
+                </section>
+                <section>
+                    <p>
+                        Would I use MobX in future project?
+                    </p>
+                    <p class="fragment fade-in">
+                        <strong>Yes!</strong>
+                    </p>
+                </section>
+                <section>
+                    <p>
+                        Would MobX fit for any project?
+                    </p>
+                    <p class="fragment fade-in">
+                        <strong>It is not a silver bullet!</strong>
+                    </p>
+                </section>
+            </section>
+            <section>
+                <h3>Links</h3>
                 <ul>
                     <li>
                         <a href="https://hackernoon.com/the-fundamental-principles-behind-mobx-7a725f71f3e8">
@@ -356,6 +723,11 @@ configure({ enforceActions: "strict" });
                             3 Reasons why I stopped using React.setState
                         </a>
                     </li>
+                    <li>
+                        <a href="https://hackernoon.com/an-artificial-example-where-mobx-really-shines-and-redux-is-not-really-suited-for-it-1a58313c0c70">
+                            An artificial example where MobX really shines and Redux is not really suited for it
+                        </a>
+                    </li>
                 </ul>
             </section>
             <section data-background-image="assets/questions.jpg">
@@ -365,8 +737,12 @@ configure({ enforceActions: "strict" });
 
     <script src="lib/js/head.min.js"></script>
     <script src="js/reveal.js"></script>
-
+    <script src="https://unpkg.com/feather-icons"></script>
     <script>
+        feather.replace({
+            width: 32,
+            height: 32
+        })
         // More info about config & dependencies:
         // - https://github.com/hakimel/reveal.js#configuration
         // - https://github.com/hakimel/reveal.js#dependencies
