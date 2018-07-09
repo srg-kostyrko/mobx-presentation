@@ -85,6 +85,26 @@
             position: relative;
             top: 9px;
         }
+
+        .green {
+            color: green;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .table td:first-child {
+            color: #657b83;
+        }
+
+        .table td {
+            border-bottom-color: #657b83 !important;
+        }
     </style>
 
     <!-- Printing and PDF exports -->
@@ -132,6 +152,30 @@
             </section>
             <section>
                 <section>
+                    <h1>Why MobX?</h1>
+                </section>
+                <section>
+                    <h2>Project</h2>
+                    <ul>
+                        <li class="fragment fade-in">App for financial analytics</li>
+                        <li class="fragment fade-in">Team of 6 developers</li>
+                        <li class="fragment fade-in">1 year of active development</li>
+                        <li class="fragment fade-in">&gt; 20k LOC</li>
+                    </ul>
+                </section>
+                <section data-background-image="assets/app.png" data-background-size="contain"></section>
+                <section data-background-image="assets/multiscreen.jpg" data-background-size="contain"></section>
+                <section>
+                    <ul>
+                        <li>Huge amount of data</li>
+                        <li class="fragment fade-in">Real-time updates (4 times/sec)</li>
+                        <li class="fragment fade-in">Intended to run whole working day</li>
+                        <li class="fragment fade-in">Low memory and CPU consumption</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
                     <h1>MobX quick tour</h1>
                 </section>
                 <section>
@@ -140,7 +184,7 @@
                     <h3>state</h3>
                 </section>
                 <section>
-                    Observable (with decorators)
+                    Observable
                     <pre>
                         <code class='ts' data-trim>
 class User {
@@ -150,7 +194,7 @@ class User {
                         </code>
                     </pre>
                 </section>
-                <section>
+                <!-- <section>
                     Observable (ES5)
                     <pre>
                         <code class='ts' data-trim>
@@ -179,7 +223,7 @@ decorate(User, {
 })
                         </code>
                     </pre>
-                </section>
+                </section> -->
                 <section>
                     <h1>Derivations</h1>
                     <ul>
@@ -201,7 +245,8 @@ decorate(User, {
                     <pre>
                         <code class='ts' data-trim>
 class User {
-    ...
+    @observable firstName
+    @observable fullName
     @computed get fullName () {
         return this.firstName + ' ' + this.lastName
     }
@@ -217,7 +262,7 @@ class User {
 
 </code>
                     </pre>
-                    <pre>
+                    <pre class="fragment fade-in">
                         <code class='ts fragment fade-in'>
     reaction(() => user.token, () => user.getDataFromServer())
 
@@ -225,6 +270,7 @@ class User {
                     </pre>
                 </section>
                 <section>
+                    mobx-react
                     <pre>
                         <code class='jsx' data-trim>
 @inject('user')
@@ -301,10 +347,10 @@ class UserInfo extends React.Component {
                 <section>
                     <pre>
                         <code class='ts'>
-user.nickName = 'happy-coder'
+user.nickName = 'mobx-author'
                         </code>
                     </pre>
-                    <pre>
+                    <pre class="fragment fade-in">
                         <code class='html'>
 ...
 <div>{user.nickName || user.fullName}</div>
@@ -317,25 +363,13 @@ user.nickName = 'happy-coder'
                 </section>
             </section>
 
+
             <section>
                 <section>
-                    <h1>Why MobX?</h1>
+                    <h1>MobX in project</h1>
                 </section>
                 <section>
-                    <h2>Project</h2>
-                    <ul>
-                        <li class="fragment fade-in">App for financial analytics</li>
-                        <li class="fragment fade-in">Huge amount of data</li>
-                        <li class="fragment fade-in">Real-time updates (4 times/sec)</li>
-                        <li class="fragment fade-in">Intended to run whole working day</li>
-                        <li class="fragment fade-in">Low memory and CPU consumption</li>
-                    </ul>
-                </section>
-                <section data-background-image="assets/app.png" data-background-size="contain"></section>
-            </section>
-            <section>
-                <section>
-                    <h2>To much freedom</h2>
+                    <h2>Too much freedom</h2>
                 </section>
                 <section>
                     <pre>
@@ -360,8 +394,8 @@ user.nickName = 'happy-coder'
                 </section>
                 <section>
                     <h2>State
-                        <span class="fragment strike">container</span>
-                        <span class="fragment fade-in">library</span>
+                        <span class="fragment strike" data-fragment-index="0">container</span>
+                        <span class="fragment fade-in" data-fragment-index="0">library</span>
                     </h2>
                 </section>
                 <section>
@@ -442,13 +476,18 @@ user.nickName = 'happy-coder'
                     </h1>
                 </section>
                 <section>
-                    <a href="https://mobx.js.org/best/react.html">
-                        What does MobX react to?
-                    </a>
-                    <br/>
-                    <a href="https://mobx.js.org/best/pitfalls.html">
-                        Common pitfalls &amp; best practices
-                    </a>
+                    <ul>
+                        <li>
+                            <a href="https://mobx.js.org/best/react.html">
+                                What does MobX react to?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://mobx.js.org/best/pitfalls.html">
+                                Common pitfalls &amp; best practices
+                            </a>
+                        </li>
+                    </ul>
                 </section>
                 <section>
                     <h2>
@@ -516,35 +555,17 @@ class TradesToolbarComponent extends React.Component {
                 <section>
                     Prior to v5
                     <pre><code class='ts'>
-class DataStore {
-    @observable trades = []
-}
-                    </code></pre>
-                    <pre class="fragment fade-in"><code class='ts'>
 Array.isArray(dataStore.trades) === false
                     </code></pre>
-                    <pre class="fragment fade-in"><code class='ts'>
-Array.isArray(toJS(dataStore.trades)) === true
-                    </code></pre>
-                </section>
-                <section>
-                    Prior to v5
                     <pre><code class='ts'>
 class DataStore {
     @observable tradesByCompany = {
         Apple: 1000
     }
 }
-                    </code></pre>
-                    <pre class="fragment fade-in"><code class='ts'>
 dataStore.tradesByCompany.Apple // changes observed
 
 dataStore.tradesByCompany.Microsoft // changes not observed
-                    </code></pre>
-                    <pre class="fragment fade-in"><code class='ts'>
-class DataStore {
-    @observable tradesByCompany = new Map()
-}
                     </code></pre>
                 </section>
                 <section>
@@ -610,7 +631,37 @@ class DataStore {
                     Performance out of box
                 </section>
                 <section>
-                    <img src="assets/performance.png" />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>Add Todo (ms)</th>
+                                <th>Toggle Todo (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="green">
+                                <td>React</td>
+                                <td>845</td>
+                                <td>32</td>
+                            </tr>
+                            <tr class="red">
+                                <td>Redux</td>
+                                <td>2187</td>
+                                <td>8887</td>
+                            </tr>
+                            <tr class="blue">
+                                <td>Mobx</td>
+                                <td>905</td>
+                                <td>45</td>
+                            </tr>
+                            <tr class="blue fragment fade-in">
+                                <td>Redux with decoupled state</td>
+                                <td>860</td>
+                                <td>49</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
                 <section>
                     An artificial example where MobX really shines and Redux is not really suited for it
@@ -670,7 +721,42 @@ class PriceFieldAtom {
                     <h1>mobx-state-tree</h1>
                 </section>
                 <section>
-                    <img src="assets/performance-mst.png" />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>Add Todo (ms)</th>
+                                <th>Toggle Todo (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="green">
+                                <td>React</td>
+                                <td>845</td>
+                                <td>32</td>
+                            </tr>
+                            <tr class="red">
+                                <td>Redux</td>
+                                <td>2187</td>
+                                <td>887</td>
+                            </tr>
+                            <tr class="blue">
+                                <td>Mobx</td>
+                                <td>905</td>
+                                <td>45</td>
+                            </tr>
+                            <tr class="blue">
+                                <td>Redux decoupled state</td>
+                                <td>860</td>
+                                <td>49</td>
+                            </tr>
+                            <tr class="red">
+                                <td>MobX State Tree</td>
+                                <td>3813</td>
+                                <td>835</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
             </section>
             <section>
