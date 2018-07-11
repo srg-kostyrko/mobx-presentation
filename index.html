@@ -535,6 +535,9 @@ class TradesToolbarComponent extends React.Component {
                     </p>
                 </section>
                 <section>
+                    <img src="assets/grid.png" />
+                </section>
+                <section>
                     <p>
                         Consider using MobX as local component state
                     </p>
@@ -591,6 +594,7 @@ dataStore.tradesByCompany.Microsoft // changes not observed
                 </section>
                 <section>
                     Decorators
+                    <sup>*</sup>
                 </section>
             </section>
             <section>
@@ -672,18 +676,18 @@ class DataStore {
                     <h2 class="fragment fade-in">MobX Atoms</h2>
                 </section>
                 <section>
-                    <img class="nobg" src="assets/subscription.png" />
+                    <img class="nobg" src="assets/data-sub.png" />
                 </section>
                 <section>
-                    <img class="nobg" src="assets/complex-subscription.png" />
+                    <img class="nobg" src="assets/grid.png" />
                 </section>
                 <section>
                     <pre><code class="ts">
 class PriceFieldAtom {
     atom = createAtom(
         "PriceField",
-        () => this.subscribe(this.onUpdate), // onObserved
-        () => this.unsubscribe() // onUnObserved
+        () => this.dataSource.subscribe(this.onUpdate), // onObserved
+        () => this.dataSource.unsubscribe(this.onUpdate) // onUnObserved
     );
 }
                     </code></pre>
@@ -718,7 +722,10 @@ class PriceFieldAtom {
                     </ul>
                 </section>
                 <section>
-                    <h1>mobx-state-tree</h1>
+                    <h1>
+                        <a href="https://github.com/mobxjs/mobx-state-tree">mobx-state-tree</a>
+                    </h1>
+                    <img src="assets/mobx-state-tree-logo.svg" />
                 </section>
                 <section>
                     <table class="table">
@@ -760,7 +767,9 @@ class PriceFieldAtom {
                 </section>
             </section>
             <section>
-                Summary
+                <h2>
+                    Summary
+                </h2>
                 <section>
                     <p>
                         Was MobX a good choice for project?
