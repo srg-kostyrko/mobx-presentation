@@ -145,12 +145,17 @@
                 </section>
                 <section>
                     <img src="assets/no-redux.png" />
+                    <br/>
+                    <a href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367">
+                        https://bit.ly/2pI8Isx
+                    </a>
                 </section>
                 <section>
+                    Preethi Kasireddy - MobX vs Redux: Comparing the Opposing Paradigms
                     <img src="assets/mobx-vs-redux.png" />
                     <br/>
                     <a href="https://www.youtube.com/watch?v=76FRrbY18Bs">
-                        Preethi Kasireddy - MobX vs Redux: Comparing the Opposing Paradigms
+                        https://bit.ly/2NoQhAh
                     </a>
                 </section>
             </section>
@@ -229,14 +234,6 @@ decorate(User, {
                     </pre>
                 </section> -->
                 <section>
-                    <h2>Derivations</h2>
-                    <ul>
-                        <li class="fragment fade-in">User interace</li>
-                        <li class="fragment fade-in">Derived data (e.g. number of todos left)</li>
-                        <li class="fragment fade-in">Backend integrations (like sending changes to the server)</li>
-                    </ul>
-                </section>
-                <section>
                     <h3>MobX philosophy</h3>
                     <p>
                         Anything that can be derived from the application state, should be derived.
@@ -245,7 +242,15 @@ decorate(User, {
                     <strong class="fragment fade-in">Automatically.</strong>
                 </section>
                 <section>
-                    <h2>Computed values</h2>
+                    <h2>Derivations</h2>
+                    <ul>
+                        <li class="fragment fade-in">User interace</li>
+                        <li class="fragment fade-in">Derived data (e.g. number of todos left)</li>
+                        <li class="fragment fade-in">Backend integrations (like sending changes to the server)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Computed values (lazy)</h2>
                     <pre>
                         <code class='ts' data-trim>
 class User {
@@ -267,7 +272,7 @@ class User {
 </code>
                     </pre>
                     <pre class="fragment fade-in">
-                        <code class='ts fragment fade-in'>
+                        <code class='ts'>
  reaction(() => user.token, () => user.getSettings())
 
 </code>
@@ -277,7 +282,6 @@ class User {
                     mobx-react
                     <pre>
                         <code class='jsx' data-trim>
-@inject('user')
 @observer
 class UserInfo extends React.Component {
     render () {
@@ -287,23 +291,7 @@ class UserInfo extends React.Component {
                         </code>
                         </pre>
                 </section>
-                <section>
-                    <h2>Derivations</h2>
-                    <ul>
-                        <li class="fragment fade-in">
-                            <b>Automatically</b> and
-                            <b>atomically</b> updated on state change
-                        </li>
-                        <li class="fragment fade-in">
-                            Updated
-                            <b>synchronously</b>
-                        </li>
-                        <li class="fragment fade-in">
-                            Computed are
-                            <b>lazy</b>
-                        </li>
-                    </ul>
-                </section>
+
                 <section>
                     <h1>Actions</h1>
                     <pre>
@@ -316,6 +304,25 @@ class User {
 }
                         </code>
                     </pre>
+                </section>
+                <section>
+                    On state change derivations are updated
+                    <ul>
+                        <li class="fragment fade-in">
+                            automatically
+                        </li>
+                        <li class="fragment fade-in">
+                            synchronously
+                        </li>
+                        <li class="fragment fade-in">
+                            atomically
+                            <span class="fragment fade-in">(if actions used)</span>
+                        </li>
+                    </ul>
+                    <br/>
+                    <a class="fragment fade-in" href="https://hackernoon.com/the-fundamental-principles-behind-mobx-7a725f71f3e8">
+                        Fundamental principles behind MobX - https://bit.ly/2x7YcJL
+                    </a>
                 </section>
                 <section>
                     <h3>Unidirectional data flow</h3>
@@ -482,13 +489,15 @@ user.nickName = 'mobx-author'
                 <section>
                     <ul>
                         <li>
+                            What does MobX react to? -
                             <a href="https://mobx.js.org/best/react.html">
-                                What does MobX react to?
+                                https://mobx.js.org/best/react.html
                             </a>
                         </li>
                         <li>
+                            Common pitfalls &amp; best practices -
                             <a href="https://mobx.js.org/best/pitfalls.html">
-                                Common pitfalls &amp; best practices
+                                https://mobx.js.org/best/pitfalls.html
                             </a>
                         </li>
                     </ul>
@@ -542,15 +551,20 @@ class TradesToolbar extends React.Component {
                     <p>
                         Consider using MobX as local component state
                     </p>
+                    <p>
+                        <a href="https://blog.cloudboost.io/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e">
+                            https://bit.ly/2mraL07
+                        </a>
+                    </p>
                     <ul>
                         <li class="fragment fade-in">setState is asynchronous</li>
                         <li class="fragment fade-in">setState can cause unnecessary renders</li>
                         <li class="fragment fade-in">setState is not sufficient to capture all component state</li>
                     </ul>
                 </section>
-                <section>
+                <!-- <section>
                     Don't forget to dispose your reactions!
-                </section>
+                </section> -->
             </section>
             <section>
                 <section>
@@ -620,8 +634,7 @@ dataStore.tradesByCompany.Microsoft // changes not observed
                 </section>
                 <section>
                     Easy to integrate async data fetching
-                    <pre><code class='ts'>
-class DataStore {
+                    <pre><code class='ts'>class DataStore {
     async loadTrades () {
         this.setLoadingTrades(true)
         try {
@@ -632,8 +645,7 @@ class DataStore {
         }
         this.setLoadingTrades(false)
     }
-}
-                    </code></pre>
+}</code></pre>
                 </section>
                 <section>
                     No need to normalize state
@@ -677,7 +689,11 @@ class DataStore {
                 </section>
                 <section>
                     An artificial example where MobX really shines and Redux is not really suited for it
-                    <img src="assets/paint.gif" />
+                    <img style="max-width: 70%;" src="assets/paint.gif" />
+                    <br/>
+                    <a href="https://hackernoon.com/an-artificial-example-where-mobx-really-shines-and-redux-is-not-really-suited-for-it-1a58313c0c70">
+                        https://bit.ly/2Lrgg9S
+                    </a>
                 </section>
                 <section>
                     <h3>Mobx</h3>
@@ -811,36 +827,6 @@ class PriceFieldAtom {
                         <strong>It is not a silver bullet!</strong>
                     </h2>
                 </section>
-            </section>
-            <section>
-                <h3>Links</h3>
-                <ul>
-                    <li>
-                        <a href="https://hackernoon.com/the-fundamental-principles-behind-mobx-7a725f71f3e8">
-                            Fundamental principles behind MobX
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367">
-                            You Might Not Need Redux
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=76FRrbY18Bs">
-                            Preethi Kasireddy - MobX vs Redux: Comparing the Opposing Paradigms
-                        </a>
-                    </li>
-                    <li>
-                        <a href='https://blog.cloudboost.io/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e'>
-                            3 Reasons why I stopped using React.setState
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://hackernoon.com/an-artificial-example-where-mobx-really-shines-and-redux-is-not-really-suited-for-it-1a58313c0c70">
-                            An artificial example where MobX really shines and Redux is not really suited for it
-                        </a>
-                    </li>
-                </ul>
             </section>
             <section data-background-image="assets/questions.jpg">
             </section>
